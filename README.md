@@ -46,23 +46,6 @@ export default defineConfig({
   // Output directory for generated code
   output: 'src/generated',
 
-  // Contract addresses by chain ID
-  addresses: {
-    1: {
-      MyToken: '0x1234567890123456789012345678901234567890',
-    },
-  },
-
-  // Contract ABIs
-  fragments: {
-    ERC20: erc20Abi,
-  },
-
-  // Chain configurations
-  chains: {
-    ethereum: mainnet,
-  },
-
   // Plugins for code generation
   plugins: [
     hardhat(),
@@ -84,19 +67,26 @@ npx etherlib generate
 Import and use the generated code in your application:
 
 ```ts
-import { client, getContractERC20 } from './src/generated'
+import { chain, chains, client, getContractCounter } from './src/generated'
 
+// Set up current chain
+chain.proxy.update(chains.ethereum)
 // Set up your client or wallet
 client.proxy.update(createPublicClient({/* your options */}))
 wallet.proxy.update(createWalletClient({/* your options */}))
 
 // Use the generated contract functions
-const erc20 = getContractERC20({
-  address: '0x1234567890123456789012345678901234567890'
+
+// auto find chain address, client
+const counter = getContractCounter()
+// or manually set the address and client
+const counter = getContractCounter({
+  address: '0xYourContractAddress',
+  client: createPublicClient({/* ... */}), // or { client, wallet }
 })
 
-// Now you can interact with the contract
-const balance = await erc20.read.balanceOf(['0xYourAddress'])
+// Call contract functions
+const num = await counter.read.x()
 ```
 
 ## Hardhat Network Expansion
