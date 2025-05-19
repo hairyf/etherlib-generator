@@ -8,6 +8,11 @@
 
 Manage and generate different ethereum library codes from config(ABIs, networks, chains, address)
 
+![library][hardhat-src]
+![library][viem-src]
+![library][ethers-src]
+![library][wagmi-src]
+
 ## Features ✨
 
 - **Simplified Contract Interaction** - Generate type-safe contract interfaces from ABIs
@@ -15,7 +20,6 @@ Manage and generate different ethereum library codes from config(ABIs, networks,
 - **Chain Management** - Configure and manage multiple blockchain networks
 - **Address Management** - Organize contract addresses across different chains
 - **Plugin System** - Extensible architecture with plugins for different libraries and frameworks
-- **Hardhat Integration** - Seamless integration with Hardhat projects
 - **Type Safety** - Full TypeScript support for enhanced developer experience
 
 ## Installation 📦
@@ -93,6 +97,47 @@ const erc20 = getContractERC20({
 
 // Now you can interact with the contract
 const balance = await erc20.read.balanceOf(['0xYourAddress'])
+```
+
+## Hardhat Network Expansion
+
+Expand the network field by importing `etherlib-generator/hardhat-network` to reference the chain network in the Hardhat configuration.
+
+```ts
+/// <reference types="etherlib-generator/hardhat-network" />
+
+import type { HardhatUserConfig } from 'hardhat/config'
+
+const config: HardhatUserConfig = {
+  networks: {
+    sepolia: {
+      type: 'http',
+      chainType: 'l1',
+      url: 'Your RPC URL',
+      chainId: 11155111,
+      accounts: [configVariable('SEPOLIA_PRIVATE_KEY')],
+      // more options...
+      icon: 'https://sepolia.dev/icon.svg',
+      name: 'Sepolia',
+      testnet: true,
+      currency: {
+        name: 'Sepolia Ether',
+        symbol: 'ETH',
+        decimals: 18,
+      },
+      contracts: {
+        USDT: '0x..',
+      },
+      explorer: {
+        name: 'Sepolia Etherscan',
+        url: '...',
+        api: '...',
+      },
+    },
+  },
+}
+
+export default config
 ```
 
 ## Configuration Options 🛠️
@@ -194,3 +239,7 @@ Check out the [playground](https://github.com/hairyf/etherlib-generator/tree/mai
 [license-href]: https://github.com/hairyf/etherlib-generator/blob/main/LICENSE
 [jsdocs-src]: https://img.shields.io/badge/jsdocs-reference-080f12?style=flat&colorA=080f12&colorB=1fa669
 [jsdocs-href]: https://www.jsdocs.io/package/etherlib-generator
+[hardhat-src]: https://img.shields.io/badge/hardhat-v3+-CCB200.svg
+[viem-src]: https://img.shields.io/badge/viem-v2+-ffc517.svg
+[ethers-src]: https://img.shields.io/badge/ethers-v6+-2535a0.svg
+[wagmi-src]: https://img.shields.io/badge/wagmi-v2+-a8b1ff.svg
