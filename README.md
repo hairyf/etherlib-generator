@@ -46,10 +46,18 @@ export default defineConfig({
   // Output directory for generated code
   output: 'src/generated',
 
-  // Plugins for code generation
+  // Manually add contract ABIs
+  fragments: {},
+  // Manually add contract addresses
+  addresses: {},
+  // Manually add chain networks
+  chains: {},
+
   plugins: [
+    // Collect configs(deployedAddress, network, fragments) from Hardhat
     hardhat(),
-    viem(),
+    // Generate code for viem
+    viem(), // or ethers()
   ],
 })
 ```
