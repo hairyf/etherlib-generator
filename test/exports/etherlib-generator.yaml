@@ -1,0 +1,7 @@
+.:
+  defineConfig: function
+./hardhat-network: {}
+./plugins:
+  ethers: function
+  hardhat: function
+  viem: function

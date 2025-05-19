@@ -1,5 +1,6 @@
 {
   "name": "playground",
+  "private": true,
   "scripts": {
     "build": "etherlib generate"
   },
