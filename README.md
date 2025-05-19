@@ -83,6 +83,8 @@ chain.proxy.update(chains.ethereum)
 client.proxy.update(createPublicClient({/* your options */}))
 wallet.proxy.update(createWalletClient({/* your options */}))
 
+const blockNumber = await client.getBlockNumber()
+
 // Use the generated contract functions
 
 // auto find chain address, client
@@ -95,6 +97,33 @@ const counter = getContractCounter({
 
 // Call contract functions
 const num = await counter.read.x()
+```
+
+The proxy is a special object that allows you to dynamically update configurations at runtime through the `update` method. This enables you to use the same contract instances in different environments without having to recreate them each time.
+
+```ts
+import { client, getContractCounter } from './src/generated'
+
+const counter = getContractCounter()
+
+client.proxy.update(createPublicClient({/* ethereum */}))
+const ethereumBlockNumber = await client.getBlockNumber()
+counter.read.x() // call ethereum counter contract
+
+client.proxy.update(createPublicClient({/* sepolia */}))
+const sepoliaBlockNumber = await client.getBlockNumber()
+counter.read.x() // call sepolia counter contract
+```
+
+Updating the chain will help contracts automatically find the correct contract address
+
+```ts
+import { chain, chains } from './src/generated'
+
+chain.proxy.update(chains.sepolia)
+
+// find chains.sepolia.contracts.Counter.address
+const counter = getContractCounter()
 ```
 
 ## Hardhat Network Expansion
