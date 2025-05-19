@@ -1,0 +1,17 @@
+{
+  "name": "playground",
+  "scripts": {
+    "build": "etherlib generate"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "catalog:",
+    "@nomicfoundation/hardhat-ignition-viem": "catalog:",
+    "@nomicfoundation/hardhat-keystore": "catalog:",
+    "@nomicfoundation/hardhat-toolbox-viem": "catalog:",
+    "@types/node": "catalog:types",
+    "etherlib-generator": "workspace:^",
+    "forge-std": "catalog:",
+    "hardhat": "catalog:",
+    "viem": "catalog:"
+  }
+}

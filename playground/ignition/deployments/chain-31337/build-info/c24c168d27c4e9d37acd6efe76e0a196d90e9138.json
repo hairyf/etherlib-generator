@@ -1,0 +1,42 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "c24c168d27c4e9d37acd6efe76e0a196d90e9138",
+  "solcVersion": "0.8.28",
+  "solcLongVersion": "0.8.28+commit.7893614a",
+  "publicSourceNameMap": {
+    "contracts/Rocket.sol": "contracts/Rocket.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "evmVersion": "cancun",
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": [
+        "forge-std/=npm/forge-std@1.9.4/src/",
+        "@openzeppelin/contracts/=npm/@openzeppelin/contracts@5.3.0/"
+      ]
+    },
+    "sources": {
+      "contracts/Rocket.sol": {
+        "content": "// SPDX-License-Identifier: UNLICENSED\r\npragma solidity ^0.8.28;\r\n\r\ncontract Rocket {\r\n    string public name;\r\n    string public status;\r\n\r\n    constructor(string memory _name) {\r\n        name = _name;\r\n        status = \"ignition\";\r\n    }\r\n\r\n    function launch() public {\r\n        status = \"lift-off\";\r\n    }\r\n}\r\n"
+      }
+    }
+  }
+}
