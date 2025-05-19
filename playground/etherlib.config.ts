@@ -6,7 +6,7 @@ import { mainnet } from 'viem/chains'
 
 // This is a configuration file for the Ethereum Library Generator.
 const config = defineConfig({
-  output: 'src/generated',
+  output: 'dist',
   addresses: {
     1: {
       Rocket: '0x5FbDB2315678afecb367f032d93F642f64180aa3',

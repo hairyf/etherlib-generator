@@ -10,5 +10,9 @@ export default antfu(
     rules: {
       'eslint-comments/no-unlimited-disable': 'off',
     },
+    ignores: [
+      'playground/artifacts',
+      'playground/dist',
+    ],
   },
 )

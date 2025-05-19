@@ -6,7 +6,7 @@
 [![JSDocs][jsdocs-src]][jsdocs-href]
 [![License][license-src]][license-href]
 
-A powerful tool for managing and generating Ethereum library code from your configurations (ABIs, networks, chains, addresses).
+Manage and generate different ethereum library codes from config(ABIs, networks, chains, address)
 
 ## Features ✨
 
