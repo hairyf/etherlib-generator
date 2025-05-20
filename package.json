@@ -28,7 +28,7 @@
         "types": "./dist/index.d.mts",
         "import": "./dist/index.mjs"
       },
-      "./src/plugins": {
+      "./plugins": {
         "types": "./dist/plugins/index.d.mts",
         "import": "./dist/plugins/index.mjs"
       },

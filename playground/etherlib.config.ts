@@ -1,5 +1,5 @@
 import { defineConfig } from 'etherlib-generator'
-import { hardhat, viem } from 'etherlib-generator/plugins'
+import { ethers, hardhat } from 'etherlib-generator/plugins'
 
 import { erc20Abi, erc721Abi } from 'viem'
 import { mainnet } from 'viem/chains'
@@ -21,7 +21,7 @@ const config = defineConfig({
   },
   plugins: [
     hardhat(),
-    viem(),
+    ethers(),
   ],
 })
 
