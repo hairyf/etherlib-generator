@@ -5,8 +5,8 @@ import type { Chain, ViemChain } from './viem'
 export type { Chain }
 
 export interface Addresses {
-  [chainId: string]: {
-    [contractName: string]: Address
+  [contractName: string]: {
+    [chainId: string]: Address
   }
 }
 export interface Fragments {

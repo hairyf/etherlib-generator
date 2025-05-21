@@ -4,12 +4,16 @@
   "scripts": {
     "build": "etherlib generate"
   },
+  "dependencies": {
+    "wagmi": "catalog:"
+  },
   "devDependencies": {
     "@nomicfoundation/hardhat-ignition": "catalog:",
     "@nomicfoundation/hardhat-ignition-viem": "catalog:",
     "@nomicfoundation/hardhat-keystore": "catalog:",
     "@nomicfoundation/hardhat-toolbox-viem": "catalog:",
     "@types/node": "catalog:types",
+    "@types/react": "catalog:",
     "etherlib-generator": "workspace:^",
     "forge-std": "catalog:",
     "hardhat": "catalog:",

@@ -1,5 +1,5 @@
 import { defineConfig } from 'etherlib-generator'
-import { ethers, hardhat } from 'etherlib-generator/plugins'
+import { hardhat, viem } from 'etherlib-generator/plugins'
 
 import { erc20Abi, erc721Abi } from 'viem'
 import { mainnet } from 'viem/chains'
@@ -8,8 +8,8 @@ import { mainnet } from 'viem/chains'
 const config = defineConfig({
   output: 'dist',
   addresses: {
-    1: {
-      Rocket: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+    Rocket: {
+      1: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
     },
   },
   fragments: {
@@ -21,7 +21,7 @@ const config = defineConfig({
   },
   plugins: [
     hardhat(),
-    ethers(),
+    viem(),
   ],
 })
 

@@ -112,9 +112,9 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
     for (const alias in handled.chains) {
       const chain = handled.chains[alias]
       chain.contracts ??= {}
-      for (const name in handled.addresses?.[chain.id]) {
-        if (typeof handled.addresses[chain.id][name] === 'string')
-          chain.contracts[name] = { address: handled.addresses[chain.id][name] }
+      for (const name in handled.addresses) {
+        if (typeof handled.addresses[name][chain.id] === 'string')
+          chain.contracts[name] = { address: handled.addresses[name][chain.id] }
       }
       for (const name in chain.contracts) {
         const address = chain.contracts[name]?.address

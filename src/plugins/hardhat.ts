@@ -102,8 +102,8 @@ export function hardhat(config: HardhatPluginConfig = {}): Plugin {
         const deployedAddresses = await readJsonFile(deployedPath)
         for (const key in deployedAddresses) {
           const [_module, contract] = key.split('#')
-          addresses[chain] ??= {}
-          addresses[chain][contract] = deployedAddresses[key]
+          addresses[contract] ??= {}
+          addresses[contract][chain] = deployedAddresses[key]
         }
       }
       return {
