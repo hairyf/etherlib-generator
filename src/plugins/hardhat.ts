@@ -2,8 +2,8 @@ import type { Addresses, Fragments, Plugin, SimpleChain, UserChains } from '../c
 import { readdir, readFile } from 'node:fs/promises'
 import { basename, join } from 'node:path'
 import process from 'node:process'
-import { loadConfig } from 'c12'
 import { glob } from 'glob'
+import { loadConfig } from 'unconfig'
 
 export interface HardhatPluginConfig {
   /**
@@ -67,7 +67,7 @@ export function hardhat(config: HardhatPluginConfig = {}): Plugin {
   return {
     name: 'hardhat',
     async resolve() {
-      const { config } = await loadConfig({ configFile: basename(hardhatConfig) })
+      const { config } = await loadConfig<any>({ sources: [{ files: basename(hardhatConfig) }] })
       const contracts: Fragments = {}
       const networks: UserChains = {}
       const addresses: Addresses = {}

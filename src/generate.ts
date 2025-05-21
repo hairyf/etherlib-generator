@@ -5,9 +5,9 @@ import type { ViemChain } from './config/viem'
 import { writeFile } from 'node:fs/promises'
 import { basename, dirname } from 'node:path'
 import { merge } from '@hairy/utils'
-import { loadConfig } from 'c12'
 import { ensureDir, remove } from 'fs-extra'
 import pc from 'picocolors'
+import { loadConfig } from 'unconfig'
 import { z } from 'zod'
 import { APP_NAME } from './constants'
 import { fromZodError } from './errors'
@@ -26,11 +26,13 @@ const GenerateOptions = z.object({
 export async function generate(options: GenerateOptions = {}): Promise<void> {
   await verify(options)
 
-  const { config, configFile } = await loadConfig<Arrayable<Config>>({ configFile: `${APP_NAME}.config` })
+  const { config, sources } = await loadConfig<Arrayable<Config>>({
+    sources: [{ files: `${APP_NAME}.config` }],
+  })
   const isArrayConfig = Array.isArray(config)
   const configs = isArrayConfig ? config : [config]
 
-  if (!configFile) {
+  if (!sources.length) {
     if (options.config)
       throw new Error(`Config not found at ${pc.gray(options.config)}`)
     throw new Error('Config not found')
@@ -39,7 +41,7 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
 
   for (const config of configs) {
     if (isArrayConfig)
-      logger.log(`Using config ${pc.gray(basename(configFile))}`)
+      logger.log(`Using config ${pc.gray(basename(sources[0]))}`)
     if (!config.output)
       throw new Error('output is required.')
 

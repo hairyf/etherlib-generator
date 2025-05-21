@@ -12,7 +12,6 @@ catalog:
   '@typechain/ethers-v6': ^0.5.1
   '@types/fs-extra': ^11.0.4
   '@types/react': ^19.1.4
-  c12: ^3.0.3
   cac: ^6.7.14
   change-case: ^5.4.4
   dedent: ^1.6.0
@@ -24,6 +23,7 @@ catalog:
   nanospinner: ^1.2.2
   picocolors: ^1.1.1
   typechain: ^8.3.2
+  unconfig: ^7.3.2
   viem: ^2.29.4
   wagmi: ^2.15.4
   zod: ^3.24.4

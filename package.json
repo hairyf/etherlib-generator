@@ -69,7 +69,6 @@
     "@hairy/utils": "catalog:",
     "@typechain/ethers-v6": "catalog:",
     "@types/fs-extra": "catalog:",
-    "c12": "catalog:",
     "cac": "catalog:",
     "change-case": "catalog:",
     "dedent": "catalog:",
@@ -79,6 +78,7 @@
     "nanospinner": "catalog:",
     "picocolors": "catalog:",
     "typechain": "catalog:",
+    "unconfig": "catalog:",
     "viem": "catalog:",
     "zod": "catalog:"
   },

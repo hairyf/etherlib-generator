@@ -61,9 +61,6 @@ catalogs:
     '@types/react':
       specifier: ^19.1.4
       version: 19.1.4
-    c12:
-      specifier: ^3.0.3
-      version: 3.0.3
     cac:
       specifier: ^6.7.14
       version: 6.7.14
@@ -97,6 +94,9 @@ catalogs:
     typechain:
       specifier: ^8.3.2
       version: 8.3.2
+    unconfig:
+      specifier: ^7.3.2
+      version: 7.3.2
     viem:
       specifier: ^2.29.4
       version: 2.29.4
@@ -142,9 +142,6 @@ importers:
       '@types/fs-extra':
         specifier: 'catalog:'
         version: 11.0.4
-      c12:
-        specifier: 'catalog:'
-        version: 3.0.3
       cac:
         specifier: 'catalog:'
         version: 6.7.14
@@ -172,6 +169,9 @@ importers:
       typechain:
         specifier: 'catalog:'
         version: 8.3.2(typescript@5.8.2)
+      unconfig:
+        specifier: 'catalog:'
+        version: 7.3.2
       viem:
         specifier: 'catalog:'
         version: 2.29.4(bufferutil@4.0.9)(typescript@5.8.2)(utf-8-validate@5.0.10)(zod@3.24.4)
@@ -8975,7 +8975,7 @@ snapshots:
 
   package-manager-detector@0.2.11:
     dependencies:
-      quansync: 0.2.8
+      quansync: 0.2.10
 
   package-manager-detector@1.0.0: {}
 
