@@ -35,7 +35,6 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
       throw new Error(`Config not found at ${pc.gray(options.config)}`)
     throw new Error('Config not found')
   }
-
   const outputNames = new Set<string>()
 
   for (const config of configs) {
@@ -43,9 +42,6 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
       logger.log(`Using config ${pc.gray(basename(configFile))}`)
     if (!config.output)
       throw new Error('output is required.')
-    if (outputNames.has(config.output))
-      throw new Error(`out "${config.output}" must be unique.`)
-    outputNames.add(config.output)
 
     // Collect contracts and watch configs from plugins
     const plugins = (config.plugins ?? []).map((x, i) => ({
@@ -126,26 +122,33 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
     }
 
     // Run plugins
-    const outputs: Output[] = []
+    const files: Output[] = []
     for (const plugin of plugins) {
       if (plugin.run)
-        outputs.push(...(await plugin.run(handled) || []))
+        files.push(...(await plugin.run(handled) || []))
     }
 
+    const outputs = Array.isArray(config.output) ? config.output : [config.output]
+
     // Write outputs
-    spinner.start(`Writing to ${pc.gray(config.output)}`)
     for (const output of outputs) {
-      const filepath = `${config.output}/${output.id}`
-      const contents = [
-        output.imports,
-        output.prepend,
-        output.content,
-      ]
-      const code = contents.filter(Boolean).join('\n\n')
-      await ensureDir(dirname(filepath))
-      await writeFile(filepath, code, 'utf-8')
+      if (outputNames.has(output))
+        throw new Error(`out "${config.output}" must be unique.`)
+      outputNames.add(output)
+      spinner.start(`Writing to ${pc.gray(output)}`)
+      for (const file of files) {
+        const filepath = `${output}/${file.id}`
+        const contents = [
+          file.imports,
+          file.prepend,
+          file.content,
+        ]
+        const code = contents.filter(Boolean).join('\n\n')
+        await ensureDir(dirname(filepath))
+        await writeFile(filepath, code, 'utf-8')
+      }
+      spinner.success()
     }
-    spinner.success()
   }
 }
 

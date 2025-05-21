@@ -79,7 +79,7 @@ export interface Plugin {
 }
 
 export interface Config {
-  output: string
+  output: string | string[]
   addresses?: Addresses
   fragments?: Fragments
   chains?: UserChains
