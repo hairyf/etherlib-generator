@@ -37,8 +37,13 @@ export interface HardhatPluginConfig {
   project?: string
 }
 
-async function readJsonFile(filePath: string): Promise<any> {
-  return JSON.parse(await readFile(filePath, 'utf8'))
+async function readJsonFile(filePath: string, defaultValue?: any): Promise<any> {
+  try {
+    return JSON.parse(await readFile(filePath, 'utf8'))
+  }
+  catch {
+    return defaultValue
+  }
 }
 
 export function hardhat(config: HardhatPluginConfig = {}): Plugin {
@@ -93,13 +98,13 @@ export function hardhat(config: HardhatPluginConfig = {}): Plugin {
       }
 
       const ignitionDirectory = join(project, ignition)
-      const deployChains = await readdir(join(ignitionDirectory, 'deployments'))
+      const deployChains = await readdir(join(ignitionDirectory, 'deployments')).catch(() => [] as string[])
       for (const dir of deployChains) {
         const [name, chain] = dir.split('-')
         if (name !== 'chain')
           continue
         const deployedPath = join(ignitionDirectory, 'deployments', dir, 'deployed_addresses.json')
-        const deployedAddresses = await readJsonFile(deployedPath)
+        const deployedAddresses = await readJsonFile(deployedPath, {})
         for (const key in deployedAddresses) {
           const [_module, contract] = key.split('#')
           addresses[contract] ??= {}
