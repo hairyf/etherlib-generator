@@ -6,7 +6,7 @@ import { writeFile } from 'node:fs/promises'
 import { basename, dirname } from 'node:path'
 import { merge } from '@hairy/utils'
 import { loadConfig } from 'c12'
-import { ensureDir } from 'fs-extra'
+import { ensureDir, remove } from 'fs-extra'
 import pc from 'picocolors'
 import { z } from 'zod'
 import { APP_NAME } from './constants'
@@ -135,6 +135,7 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
       if (outputNames.has(output))
         throw new Error(`out "${config.output}" must be unique.`)
       outputNames.add(output)
+      await remove(output)
       spinner.start(`Writing to ${pc.gray(output)}`)
       for (const file of files) {
         const filepath = `${output}/${file.id}`

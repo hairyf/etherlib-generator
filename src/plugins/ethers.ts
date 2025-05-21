@@ -32,9 +32,9 @@ export function ethers(): Plugin {
       ]
 
       const content: (string | string[])[] = [
-        `export const client = proxy<JsonRpcProvider>()`,
-        `export const wallet = proxy<Signer>()`,
-        `export const chain = proxy<typeof chains[keyof typeof chains]>()`,
+        `export const client = proxy<JsonRpcProvider>('client')`,
+        `export const wallet = proxy<Signer>('wallet')`,
+        `export const chain = proxy<typeof chains[keyof typeof chains]>('chain')`,
         '',
         `export const chains = ${JSON.stringify(config.chains)} as const`,
         '',
@@ -141,36 +141,26 @@ async function outputLibrary(): Promise<Output[]> {
     }
     
     export type Proxyed<T extends object> = T & { proxy: { update: (object?: T) => void, resolve: () => T | undefined } }
-    export function proxy<T extends object>(initObject?: T): Proxyed<T> {
+
+    export function proxy<T extends object>(name: string, initObject?: T): Proxyed<T> {
       initObject && Reflect.set(initObject, 'proxyUpdated', true)
       let target: any = initObject || { proxyUpdated: false }
-      const proxy = new Proxy<any>({}, {
+      const proxy = new Proxy({} as T, {
         get: (_, p) => {
-          return typeof target?.[p] === 'function'
-            ? target?.[p].bind(target)
-            : target?.[p]
+          if (p === 'proxy') return { update, resolve }
+          if (!Reflect.get(target, 'proxyUpdated'))
+            throw new Error(\`Proxy not updated. Call \${name}.proxy.update() to update the proxy.\`)
+          return typeof target?.[p] === 'function' ? target?.[p].bind(target) : target?.[p]
         },
-        set: (_, p, v) => {
-          target[p] = v
-          return true
-        },
-      }) as T
-    
+        set: (_, p, v) => { target[p] = v; return true },
+      })
       function update(object?: T): void {
-        if (!object) {
-          target = undefined
-          return
-        }
-        Reflect.set(object, 'proxyUpdated', true)
-        target = object
+        if (object) { Reflect.set(object, 'proxyUpdated', true); target = object }
+        else { target = undefined }
       }
-    
       function resolve(): T | undefined {
         return Reflect.get(target, 'proxyUpdated') ? target : undefined
       }
-    
-      Reflect.set(proxy, 'proxy', { update, resolve })
-    
       return proxy as Proxyed<T>
     }
     

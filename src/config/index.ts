@@ -79,10 +79,92 @@ export interface Plugin {
 }
 
 export interface Config {
+  /**
+   * output generated files directory
+   */
   output: string | string[]
+  /**
+   * will remove all existing files in the output directory
+   *
+   * @default true
+   */
+  clean?: boolean
+  /**
+   * Contracts addresses used for generating code
+   *
+   * @example
+   *
+   * ```ts
+   * export default defineConfig({
+   *  addresses: {
+   *    Rocket: {
+   *     1: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+   *     2: '0x5FbDB2315678afecb367f032d93F642f64180aa3',
+   *    },
+   *  },
+   * })
+   */
   addresses?: Addresses
+  /**
+   * Contract ABI used for generating code
+   *
+   * @example
+   *
+   * ```ts
+   * import { erc20Abi, erc721Abi } from 'viem'
+   *
+   * export default defineConfig({
+   *  fragments: {
+   *    ERC20: erc20Abi,
+   *    ERC721: erc721Abi,
+   *    yourCustomAbi: []
+   *  },
+   * })
+   */
   fragments?: Fragments
+  /**
+   * Supported chains
+   *
+   * @example
+   *
+   * ```ts
+   * import { mainnet, optimism } from 'viem/chains'
+   *
+   * export default defineConfig({
+   *  chains: {
+   *    // complex options
+   *    ethereum: mainnet,
+   *    optimism: optimism,
+   *    // simple options
+   *    custom: {
+   *      name: 'Custom Chain',
+   *      icon: 'https://...',
+   *      testnet: false,
+   *      id: 1,
+   *      explorer: { name: 'Etherscan', url: 'https:...', api: 'https:...' },
+   *      currency: { decimals: 18, name: 'Custom', symbol: 'CUSTOM' },
+   *      rpc: 'https:...',
+   *    }
+   *  },
+   * })
+   * ```
+   */
   chains?: UserChains
+  /**
+   * Extension plugins for reading and generating code
+   *
+   * @example
+   * ```ts
+   * import { hardhat, ethers } from 'etherlib-generator/plugins'
+   *
+   * export default defineConfig({
+   *  plugins: [
+   *   hardhat(),
+   *   ethers(),
+   *  ],
+   * })
+   * ```
+   */
   plugins?: Plugin[]
 }
 

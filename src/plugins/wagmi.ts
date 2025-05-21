@@ -180,7 +180,7 @@ async function outputUtils(): Promise<Output[]> {
         get: (_, p) => {
           if (p === 'proxy') return { update, resolve }
           if (!Reflect.get(target, 'proxyUpdated'))
-            throw new Error(\`Proxy not updated. Call \${name}.update() to update the proxy.\`)
+            throw new Error(\`Proxy not updated. Call \${name}.proxy.update() to update the proxy.\`)
           return typeof target?.[p] === 'function' ? target?.[p].bind(target) : target?.[p]
         },
         set: (_, p, v) => { target[p] = v; return true },

@@ -1,5 +1,5 @@
 import { defineConfig } from 'etherlib-generator'
-import { hardhat, wagmi } from 'etherlib-generator/plugins'
+import { ethers, hardhat } from 'etherlib-generator/plugins'
 
 import { erc20Abi, erc721Abi } from 'viem'
 import { mainnet } from 'viem/chains'
@@ -18,10 +18,19 @@ const config = defineConfig({
   },
   chains: {
     ethereum: mainnet,
+    custom: {
+      name: 'Custom Chain',
+      icon: 'https://...',
+      testnet: false,
+      id: 1,
+      explorer: { name: 'Etherscan', url: 'https:...', api: 'https:...' },
+      currency: { decimals: 18, name: 'Custom', symbol: 'CUSTOM' },
+      rpc: 'https:...',
+    },
   },
   plugins: [
     hardhat(),
-    wagmi(),
+    ethers(),
   ],
 })
 
