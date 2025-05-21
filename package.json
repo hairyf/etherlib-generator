@@ -1,7 +1,7 @@
 {
   "name": "etherlib-generator",
   "type": "module",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "packageManager": "pnpm@10.6.2",
   "description": "Manage and generate different ethereum library codes from config(ABIs, networks, chains, address)",
   "author": "Hairyf <wwu710632@gmail.com>",
