@@ -102,7 +102,7 @@ export function wagmi(): Plugin {
             `export const watch${pascalCaseName}Event = createWatchContractEvent(${camelCaseName}Abi)`,
             ...watchItems,
 
-            `export const useWatch${pascalCaseName}Event = createUseWatchContractEvent({ abi: erc20Abi, address: erc20Address })`,
+            `export const useWatch${pascalCaseName}Event = createUseWatchContractEvent({ abi: ${camelCaseName}Abi, address: ${camelCaseName}Address })`,
             ...watchHooks,
             '',
             `export const read${pascalCaseName} = createReadContract(${camelCaseName}Abi)`,
