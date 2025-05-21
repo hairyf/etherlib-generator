@@ -478,7 +478,7 @@ async function outputLibrary(): Promise<Output[]> {
           () => {
             if (!account)
               return
-            const transport = custom(Reflect.get(wallet, 'ethereum'))
+            const transport = custom(Reflect.get(window, 'ethereum'))
             wallet.proxy.update(createWalletClient({ chain: current!, transport, account }))
           },
           [account, current],
