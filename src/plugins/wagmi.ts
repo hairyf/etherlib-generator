@@ -1,6 +1,7 @@
 import type { Output, Plugin } from '../config'
 import { camelCase, pascalCase } from 'change-case'
 import dedent from 'dedent'
+import { getBannerContent } from './utils'
 
 export function wagmi(): Plugin {
   return {
@@ -95,6 +96,7 @@ export function wagmi(): Plugin {
             }
           }
           return [
+            getBannerContent({ name }),
             `export const get${pascalCaseName} = createGetContractBy(${camelCaseName}Abi)`,
             `export const use${pascalCaseName} = createUseContractBy(${camelCaseName}Abi)`,
             `export const ${camelCaseName}Address = Reflect.get(addresses, '${name}')`,

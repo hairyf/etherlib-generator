@@ -1,6 +1,7 @@
 import type { Output, Plugin } from '../config'
 import { camelCase, pascalCase } from 'change-case'
 import dedent from 'dedent'
+import { getBannerContent } from './utils'
 
 export function viem(): Plugin {
   return {
@@ -77,6 +78,7 @@ export function viem(): Plugin {
             }
           }
           return [
+            getBannerContent({ name }),
             `export const get${pascalCaseName} = createGetContractBy(${camelCaseName}Abi)`,
             '',
             `export const watch${pascalCaseName}Event = createWatchContractEvent(${camelCaseName}Abi)`,

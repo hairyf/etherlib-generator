@@ -6,13 +6,6 @@ import { erc20Abi } from 'viem'
 const config = defineConfig([
   {
     output: 'dist',
-    plugins: [
-      hardhat(),
-      ethers(),
-    ],
-  },
-  {
-    output: 'dist2',
     fragments: {
       ERC20: erc20Abi,
       ERC721: erc20Abi,

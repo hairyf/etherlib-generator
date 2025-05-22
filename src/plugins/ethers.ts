@@ -63,7 +63,7 @@ export function ethers(): Plugin {
         contracts.map((name) => {
           return [
             '/**',
-            ` * Wraps __{@link get${pascalCase(name)}Contract}__ with \`abi\` set to __{@link ${camelCase(`${name}Abi`)}}__`,
+            ` * Wraps __{@link get${pascalCase(name)}}__ with \`abi\` set to __{@link ${camelCase(`${name}Abi`)}}__`,
             ' */',
             `export function get${pascalCase(name)}(config: GetContractAtConfig = {}): ${name} {`,
             `  return ${name}__factory.connect(config.address || get(chain, 'contracts.${name}.address'), config.runner || client)`,
