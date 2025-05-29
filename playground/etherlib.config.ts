@@ -1,5 +1,5 @@
 import { defineConfig } from 'etherlib-generator'
-import { ethers, hardhat } from 'etherlib-generator/plugins'
+import { hardhat, viem } from 'etherlib-generator/plugins'
 import { erc20Abi } from 'viem'
 
 // This is a configuration file for the Ethereum Library Generator.
@@ -12,7 +12,7 @@ const config = defineConfig([
     },
     plugins: [
       hardhat(),
-      ethers(),
+      viem(),
     ],
   },
 ])
