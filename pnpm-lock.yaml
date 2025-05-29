@@ -85,6 +85,9 @@ catalogs:
     hardhat:
       specifier: 3.0.0-next.7
       version: 3.0.0-next.7
+    nanoid:
+      specifier: ^5.1.5
+      version: 5.1.5
     nanospinner:
       specifier: ^1.2.2
       version: 1.2.2
@@ -160,6 +163,9 @@ importers:
       glob:
         specifier: 'catalog:'
         version: 11.0.2
+      nanoid:
+        specifier: 'catalog:'
+        version: 5.1.5
       nanospinner:
         specifier: 'catalog:'
         version: 1.2.2
@@ -260,7 +266,7 @@ importers:
         version: link:..
       forge-std:
         specifier: 'catalog:'
-        version: https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262
+        version: git+https://github.com/foundry-rs/forge-std.git#1eea5bae12ae557d589f9f0f0edae2faa47cb262
       hardhat:
         specifier: 'catalog:'
         version: 3.0.0-next.7(bufferutil@4.0.9)(utf-8-validate@5.0.10)
@@ -2737,8 +2743,8 @@ packages:
     resolution: {integrity: sha512-gIXjKqtFuWEgzFRJA9WCQeSJLZDjgJUOMCMzxtvFq/37KojM1BFGufqsCy0r4qSQmYLsZYMeyRqzIWOMup03sw==}
     engines: {node: '>=14'}
 
-  forge-std@https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262:
-    resolution: {tarball: https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262}
+  forge-std@git+https://github.com/foundry-rs/forge-std.git#1eea5bae12ae557d589f9f0f0edae2faa47cb262:
+    resolution: {commit: 1eea5bae12ae557d589f9f0f0edae2faa47cb262, repo: https://github.com/foundry-rs/forge-std.git, type: git}
     version: 1.9.4
 
   forwarded-parse@2.1.2:
@@ -3362,6 +3368,11 @@ packages:
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
+    hasBin: true
+
+  nanoid@5.1.5:
+    resolution: {integrity: sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==}
+    engines: {node: ^18 || >=20}
     hasBin: true
 
   nanospinner@1.2.2:
@@ -8000,7 +8011,7 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  forge-std@https://codeload.github.com/foundry-rs/forge-std/tar.gz/1eea5bae12ae557d589f9f0f0edae2faa47cb262: {}
+  forge-std@git+https://github.com/foundry-rs/forge-std.git#1eea5bae12ae557d589f9f0f0edae2faa47cb262: {}
 
   forwarded-parse@2.1.2: {}
 
@@ -8799,6 +8810,8 @@ snapshots:
   multiformats@9.9.0: {}
 
   nanoid@3.3.8: {}
+
+  nanoid@5.1.5: {}
 
   nanospinner@1.2.2:
     dependencies:

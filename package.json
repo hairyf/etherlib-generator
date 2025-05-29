@@ -75,6 +75,7 @@
     "ethers": "catalog:",
     "fs-extra": "catalog:",
     "glob": "catalog:",
+    "nanoid": "catalog:",
     "nanospinner": "catalog:",
     "picocolors": "catalog:",
     "typechain": "catalog:",

@@ -5,6 +5,7 @@ import { camelCase, pascalCase } from 'change-case'
 import dedent from 'dedent'
 import { ensureDir, readFileSync, remove } from 'fs-extra'
 import { glob } from 'glob'
+import { nanoid } from 'nanoid'
 import { runTypeChain, glob as tGlob } from 'typechain'
 
 async function directoryToOutputs(directory: string): Promise<Output[]> {
@@ -88,7 +89,7 @@ export function ethers(): Plugin {
 }
 
 async function outputTypechain(contracts: Contracts): Promise<Output[]> {
-  const cachePath = path.join(import.meta.dirname, '.cache')
+  const cachePath = path.join(import.meta.dirname, '.cache', nanoid())
   const fragmentsPath = path.join(cachePath, 'fragments')
   const typechainPath = path.join(cachePath, 'typechain')
 
