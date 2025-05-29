@@ -3,5 +3,7 @@
 ./hardhat-network: {}
 ./plugins:
   ethers: function
+  fetch: function
   hardhat: function
   viem: function
+  wagmi: function
