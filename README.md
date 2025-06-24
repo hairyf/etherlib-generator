@@ -75,6 +75,38 @@ npx etherlib generate
 Import and use the generated code in your application:
 
 ```ts
+import { chains, client, connection, getContractCounter } from './src/generated'
+
+// Indicate chain(only query)
+connection.connect(chains.ethereum)
+
+// Indicate chain and account(metamask/eip-1193)
+connection.connect(chains.ethereum, { type: 'eip-1193', value: window.ethereum })
+
+// Indicate chain and account(provideKey)
+connection.connect(chains.ethereum, { type: 'provideKey', value: 'your-private-key' })
+
+const blockNumber = await client.getBlockNumber()
+
+// Use the generated contract functions
+
+// auto find chain address, client
+const counter = getContractCounter()
+// or manually set the address and client
+const counter = getContractCounter({
+  address: '0xYourContractAddress',
+  client: createPublicClient({/* ... */}), // or { client, wallet }
+})
+
+// Call contract functions
+const num = await counter.read.x()
+```
+
+`connection` represents the current session being used. It is connected via the `connection.connect()` method, specifying the chain and account to be used, which will affect the global usage without the need to manually create `client/wallet` or pass configuration information when using contracts later.
+
+`connection` is implemented based on `proxy`, which is a special object that allows you to dynamically update configurations through `proxy` at runtime. This allows you to use the same contract instances in different environments without having to recreate them each time.
+
+```ts
 import { chain, chains, client, getContractCounter } from './src/generated'
 
 // Set up current chain
@@ -98,8 +130,6 @@ const counter = getContractCounter({
 // Call contract functions
 const num = await counter.read.x()
 ```
-
-The proxy is a special object that allows you to dynamically update configurations at runtime through the `update` method. This enables you to use the same contract instances in different environments without having to recreate them each time.
 
 ```ts
 import { client, getContractCounter } from './src/generated'
