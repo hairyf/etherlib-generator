@@ -518,9 +518,12 @@ async function outputLibrary(): Promise<Output[]> {
 
         useEffect(
           () => {
-            if (!account)
+            if (!account || typeof window === 'undefined')
               return
-            const transport = custom(Reflect.get(window, 'ethereum'))
+            const eip1193Provider = Reflect.get(window, 'ethereum')
+            if (!eip1193Provider || !eip1193Provider?.request)
+              return
+            const transport = custom(eip1193Provider)
             wallet.proxy.update(createWalletClient({ chain: current!, transport, account }))
           },
           [account, current],
