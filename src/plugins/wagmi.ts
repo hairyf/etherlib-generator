@@ -1,6 +1,6 @@
 import type { Output, Plugin } from '../config'
-import { camelCase, pascalCase } from 'change-case'
 import dedent from 'dedent'
+import { camelCase, pascalCase } from 'scule'
 import { getBannerContent } from './utils'
 
 export function wagmi(): Plugin {

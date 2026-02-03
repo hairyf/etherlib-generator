@@ -2,12 +2,12 @@
 import type { Arrayable } from '@hairy/utils'
 import type { Chain, Config, Output, PluginBuildConfig, PluginBuildResolved, SimpleChain, UserChains } from './config'
 import type { ViemChain } from './config/viem'
-import { writeFile } from 'node:fs/promises'
-import { basename, dirname } from 'node:path'
+import { mkdir, rm, writeFile } from 'node:fs/promises'
+import { basename, dirname, resolve } from 'node:path'
+import process from 'node:process'
 import { merge } from '@hairy/utils'
-import { ensureDir, remove } from 'fs-extra'
+import { loadConfig } from 'c12'
 import pc from 'picocolors'
-import { loadConfig } from 'unconfig'
 import { z } from 'zod'
 import { APP_NAME } from './constants'
 import { fromZodError } from './errors'
@@ -26,13 +26,23 @@ const GenerateOptions = z.object({
 export async function generate(options: GenerateOptions = {}): Promise<void> {
   await verify(options)
 
-  const { config, sources } = await loadConfig<Arrayable<Config>>({
-    sources: [{ files: `${APP_NAME}.config` }],
+  const cwd = options.root ?? process.cwd()
+  const configFile = options.config
+    ? basename(resolve(cwd, options.config)).replace(/\.[^.]+$/, '')
+    : undefined
+  const { config, configFile: resolvedConfigFile } = await loadConfig<Arrayable<Config>>({
+    name: APP_NAME,
+    cwd,
+    configFile: configFile ?? `${APP_NAME}.config`,
   })
+  if (!resolvedConfigFile) {
+    if (options.config)
+      throw new Error(`Config not found at ${pc.gray(options.config)}`)
+    throw new Error('Config not found')
+  }
   const isArrayConfig = Array.isArray(config)
-  const configs = isArrayConfig ? config : [config]
-
-  if (!sources.length) {
+  const configs = (isArrayConfig ? config : [config]).filter(Boolean)
+  if (!configs.length) {
     if (options.config)
       throw new Error(`Config not found at ${pc.gray(options.config)}`)
     throw new Error('Config not found')
@@ -40,8 +50,8 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
   const outputNames = new Set<string>()
 
   for (const config of configs) {
-    if (isArrayConfig)
-      logger.log(`Using config ${pc.gray(basename(sources[0]))}`)
+    if (isArrayConfig && resolvedConfigFile)
+      logger.log(`Using config ${pc.gray(basename(resolvedConfigFile))}`)
     if (!config.output)
       throw new Error('output is required.')
 
@@ -162,7 +172,7 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
       if (outputNames.has(output))
         throw new Error(`out "${config.output}" must be unique.`)
       outputNames.add(output)
-      await remove(output)
+      await rm(output, { recursive: true, force: true })
       spinner.start(`Writing to ${pc.gray(output)}`)
       for (const file of files) {
         const filepath = `${output}/${file.id}`
@@ -172,7 +182,7 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
           file.content,
         ]
         const code = contents.filter(Boolean).join('\n\n')
-        await ensureDir(dirname(filepath))
+        await mkdir(dirname(filepath), { recursive: true })
         await writeFile(filepath, code, 'utf-8')
       }
       spinner.success()

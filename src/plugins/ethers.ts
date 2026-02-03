@@ -1,12 +1,12 @@
 import type { Contracts, Output, Plugin } from '../config'
-import { writeFile } from 'node:fs/promises'
+import { readFileSync } from 'node:fs'
+import { mkdir, rm, writeFile } from 'node:fs/promises'
 import path from 'node:path'
-import { camelCase, pascalCase } from 'change-case'
 import dedent from 'dedent'
-import { ensureDir, readFileSync, remove } from 'fs-extra'
 import { glob } from 'glob'
 import { genFunction, genImport, genVariable } from 'knitwork-x'
 import { nanoid } from 'nanoid'
+import { camelCase, pascalCase } from 'scule'
 import { runTypeChain, glob as tGlob } from 'typechain'
 
 async function directoryToOutputs(directory: string): Promise<Output[]> {
@@ -156,10 +156,10 @@ async function outputTypechain(contracts: Contracts): Promise<Output[]> {
   const fragmentsPath = path.join(cachePath, 'fragments')
   const typechainPath = path.join(cachePath, 'typechain')
 
-  await remove(cachePath)
-  await ensureDir(cachePath)
-  await ensureDir(fragmentsPath)
-  await ensureDir(typechainPath)
+  await rm(cachePath, { recursive: true, force: true })
+  await mkdir(cachePath, { recursive: true })
+  await mkdir(fragmentsPath, { recursive: true })
+  await mkdir(typechainPath, { recursive: true })
 
   for (const name in contracts) {
     await writeFile(
@@ -182,7 +182,7 @@ async function outputTypechain(contracts: Contracts): Promise<Output[]> {
   for (const output of outputs)
     output.id = `typechain/${output.id}`
 
-  await remove(cachePath)
+  await rm(cachePath, { recursive: true, force: true })
 
   return outputs
 }

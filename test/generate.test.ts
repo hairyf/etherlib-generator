@@ -2,26 +2,28 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { generate } from '../src/generate'
 
 const mockLoadConfig = vi.hoisted(() => vi.fn())
-vi.mock('unconfig', () => ({
+vi.mock('c12', () => ({
   loadConfig: (opts: unknown) => mockLoadConfig(opts),
 }))
 
-const mockEnsureDir = vi.hoisted(() => vi.fn())
-const mockRemove = vi.hoisted(() => vi.fn())
+const mockMkdir = vi.hoisted(() => vi.fn())
+const mockRm = vi.hoisted(() => vi.fn())
 const mockWriteFile = vi.hoisted(() => vi.fn())
-vi.mock('fs-extra', () => ({
-  ensureDir: (path: string) => mockEnsureDir(path),
-  remove: (path: string) => mockRemove(path),
-}))
-vi.mock('node:fs/promises', () => ({
-  writeFile: (path: string, data: string) => mockWriteFile(path, data),
-}))
+vi.mock('node:fs/promises', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('node:fs/promises')>()
+  return {
+    ...actual,
+    mkdir: (path: string, opts?: unknown) => mockMkdir(path, opts),
+    rm: (path: string, opts?: unknown) => mockRm(path, opts),
+    writeFile: (path: string, data: string) => mockWriteFile(path, data),
+  }
+})
 
 describe('generate', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockEnsureDir.mockResolvedValue(undefined)
-    mockRemove.mockResolvedValue(undefined)
+    mockMkdir.mockResolvedValue(undefined)
+    mockRm.mockResolvedValue(undefined)
     mockWriteFile.mockResolvedValue(undefined)
   })
 
@@ -30,19 +32,19 @@ describe('generate', () => {
   })
 
   it('throws ValidationError when options are invalid', async () => {
-    mockLoadConfig.mockResolvedValue({ config: { output: 'out' }, sources: ['etherlib.config.ts'] })
+    mockLoadConfig.mockResolvedValue({ config: { output: 'out' }, configFile: 'etherlib.config.ts' })
     await expect(generate({ config: 123 } as never)).rejects.toThrow('Invalid option')
   })
 
   it('throws when config is not found (no sources)', async () => {
-    mockLoadConfig.mockResolvedValue({ config: undefined, sources: [] })
+    mockLoadConfig.mockResolvedValue({ config: undefined, configFile: undefined })
     await expect(generate()).rejects.toThrow('Config not found')
   })
 
   it('throws when config has no output', async () => {
     mockLoadConfig.mockResolvedValue({
       config: { plugins: [] },
-      sources: ['etherlib.config.ts'],
+      configFile: 'etherlib.config.ts',
     })
     await expect(generate()).rejects.toThrow('output is required.')
   })
@@ -62,13 +64,13 @@ describe('generate', () => {
           },
         ],
       },
-      sources: ['etherlib.config.ts'],
+      configFile: 'etherlib.config.ts',
     })
 
     await generate()
 
-    expect(mockRemove).toHaveBeenCalledWith('dist')
-    expect(mockEnsureDir).toHaveBeenCalled()
+    expect(mockRm).toHaveBeenCalledWith('dist', expect.any(Object))
+    expect(mockMkdir).toHaveBeenCalled()
     expect(mockWriteFile).toHaveBeenCalledWith(
       expect.stringContaining('Contract.ts'),
       expect.any(String),
@@ -78,7 +80,7 @@ describe('generate', () => {
   it('accepts valid options (config, root)', async () => {
     mockLoadConfig.mockResolvedValue({
       config: { output: 'out', plugins: [] },
-      sources: ['custom.config.ts'],
+      configFile: 'custom.config.ts',
     })
     await expect(generate({ config: 'custom.config.ts', root: process.cwd() })).resolves.toBeUndefined()
   })
@@ -92,6 +94,7 @@ describe('generate', () => {
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     }
     mockLoadConfig.mockResolvedValue({
+      configFile: 'etherlib.config.ts',
       config: {
         output: 'dist',
         chains: [mainnetLike],
@@ -103,7 +106,6 @@ describe('generate', () => {
           },
         ],
       },
-      sources: ['etherlib.config.ts'],
     })
 
     await generate()
@@ -123,6 +125,7 @@ describe('generate', () => {
       currency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
     }
     mockLoadConfig.mockResolvedValue({
+      configFile: 'etherlib.config.ts',
       config: {
         output: 'dist',
         chains: [chainWithoutName],
@@ -134,7 +137,6 @@ describe('generate', () => {
           },
         ],
       },
-      sources: ['etherlib.config.ts'],
     })
 
     await generate()

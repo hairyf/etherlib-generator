@@ -10,7 +10,7 @@ const mockGlob = vi.fn()
 const mockReadFile = vi.fn()
 const mockReaddir = vi.fn()
 
-vi.mock('unconfig', () => ({
+vi.mock('c12', () => ({
   loadConfig: (options: unknown) => mockLoadConfig(options),
 }))
 vi.mock('glob', () => ({
@@ -64,9 +64,10 @@ describe('plugins/hardhat', () => {
     expect(result?.chains?.mainnet).toBeDefined()
     expect(result?.chains?.mainnet?.id).toBe(1)
     expect(result?.chains?.mainnet?.name).toBe('Mainnet')
+    // @ts-expect-error - rpc is not a property of ViemChain
     expect(result?.chains?.mainnet?.rpc).toBe('https://eth.llamarpc.com')
     expect(mockLoadConfig).toHaveBeenCalledWith(
-      expect.objectContaining({ sources: [{ files: 'hardhat.config.ts' }] }),
+      expect.objectContaining({ name: 'hardhat.config', cwd: project, configFile: 'hardhat.config' }),
     )
   })
 

@@ -1,6 +1,6 @@
 import type { Address } from 'viem'
 import type { Addresses, ContractConfig, Contracts, Plugin } from '../config'
-import { camelCase } from 'change-case'
+import { camelCase } from 'scule'
 import { z } from 'zod'
 import { fromZodError } from '../errors'
 import { readCachedFile, writeCachedFile } from './utils'
