@@ -131,7 +131,10 @@ describe('plugins/blockExplorer', () => {
     mockFetch.mockResolvedValue({
       json: () => Promise.resolve({ status: '1', message: 'OK', result: JSON.stringify(sampleAbi) }),
     })
-    const getAddress = vi.fn(({ address }: { address: Record<number, string> }) => address[137])
+    const getAddress = vi.fn(
+      ({ address }: { address: `0x${string}` | Record<number, `0x${string}`> }) =>
+        (typeof address === 'string' ? address : address[137]) as `0x${string}`,
+    )
 
     const plugin = blockExplorer({
       baseUrl: 'https://api.example.com',

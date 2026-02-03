@@ -1,8 +1,8 @@
 import type { z } from 'zod'
 
 class ValidationError extends Error {
-  details: Zod.ZodIssue[]
-  constructor(message: string, options: { details: Zod.ZodIssue[] }) {
+  details: z.ZodIssue[]
+  constructor(message: string, options: { details: z.ZodIssue[] }) {
     super(message)
     this.details = options.details
   }

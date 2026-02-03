@@ -1,3 +1,4 @@
+import type { PluginBuildResolved } from '../../src/config'
 import { describe, expect, it } from 'vitest'
 import { viem } from '../../src/plugins/viem'
 
@@ -5,7 +6,7 @@ const sampleAbi = [
   { type: 'function' as const, name: 'balanceOf', inputs: [{ name: 'owner', type: 'address' }], outputs: [{ type: 'uint256' }], stateMutability: 'view' as const },
 ]
 
-const minimalRunConfig = {
+const minimalRunConfig: PluginBuildResolved = {
   contracts: { Counter: sampleAbi },
   addresses: { Counter: { 1: '0x00000000219ab540356cbb839cbe05303d7705fa' } },
   chains: {
@@ -14,7 +15,7 @@ const minimalRunConfig = {
       name: 'Mainnet',
       nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
       rpcUrls: { default: { http: ['https://eth.llamarpc.com'] } },
-    } as any,
+    },
   },
 }
 

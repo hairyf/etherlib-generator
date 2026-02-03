@@ -1,3 +1,4 @@
+import type { SimpleChain } from '../../src/config'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { hardhat } from '../../src/plugins/hardhat'
 
@@ -64,8 +65,7 @@ describe('plugins/hardhat', () => {
     expect(result?.chains?.mainnet).toBeDefined()
     expect(result?.chains?.mainnet?.id).toBe(1)
     expect(result?.chains?.mainnet?.name).toBe('Mainnet')
-    // @ts-expect-error - rpc is not a property of ViemChain
-    expect(result?.chains?.mainnet?.rpc).toBe('https://eth.llamarpc.com')
+    expect((result?.chains?.mainnet as SimpleChain)?.rpc).toBe('https://eth.llamarpc.com')
     expect(mockLoadConfig).toHaveBeenCalledWith(
       expect.objectContaining({ name: 'hardhat.config', cwd: project, configFile: 'hardhat.config' }),
     )
