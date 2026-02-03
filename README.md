@@ -39,27 +39,30 @@ Create an `etherlib.config.ts` file in your project root:
 ```ts
 import { defineConfig } from 'etherlib-generator'
 import { hardhat, viem } from 'etherlib-generator/plugins'
-
-import { erc20Abi } from 'viem'
 import { mainnet } from 'viem/chains'
 
 export default defineConfig({
-  // Output directory for generated code
   output: 'src/generated',
-
-  // Manually add contract ABIs
-  fragments: {},
-  // Manually add contract addresses
-  addresses: {},
-  // Manually add chain networks
-  chains: {},
-
+  contracts: [
+    {
+      abi: [/* ... */],
+      address: '0x…',
+      name: 'MyCoolContract',
+    },
+    {
+      abi: [/* ... */],
+      address: {
+        1: '0xfoo…',
+        5: '0xbar…',
+      },
+      name: 'MyCoolMultichainContract',
+    },
+  ],
   plugins: [
-    // Source: hardhat() | foundry() | etherscan() | sourcify() | blockExplorer() | fetch()
     hardhat(),
-    // Generator: viem() | ethers() | wagmi()
     viem(),
   ],
+  chains: [mainnet],
 })
 ```
 
@@ -204,56 +207,43 @@ export default config
 
 Specify where generated code should be saved:
 
-### Fragments
-
-Define contract ABIs
-
 ```ts
-const config = defineConfig({
-  // ...
-  fragments: {
-    ERC20: erc20Abi,
-    MyToken: [/* abi content */],
-  }
-  // ...
-})
+defineConfig({ output: 'dist' })
 ```
 
-### Addresses
+### Contracts
 
-Configure contract addresses by chain ID:
+Define contracts with ABI, address and name. Address can be a single string (same on all chains) or an object mapping chain ID to address:
 
 ```ts
 const config = defineConfig({
-  addresses: {
-    1: { // Ethereum Mainnet
-      MyToken: '0x1234567890123456789012345678901234567890',
+  contracts: [
+    {
+      abi: [/* ... */],
+      address: '0x…',
+      name: 'MyCoolContract',
     },
-    5: { // Goerli
-      MyToken: '0x0987654321098765432109876543210987654321',
+    {
+      abi: [/* ... */],
+      address: {
+        1: '0xfoo…',
+        5: '0xbar…',
+      },
+      name: 'MyCoolMultichainContract',
     },
-  }
-  // ...
+  ],
 })
 ```
 
 ### Chains
 
-Configure blockchain chain networks:
+Configure blockchain networks as an array:
 
 ```ts
+import { mainnet, sepolia } from 'viem/chains'
+
 const config = defineConfig({
-  // ...
-  chains: {
-    ethereum: mainnet,
-    sepolia: {
-      name: 'Sepolia',
-      id: 11155111,
-      rpc: 'https://rpc.sepolia.org',
-      testnet: true,
-    },
-  }
-  // ...
+  chains: [mainnet, sepolia],
 })
 ```
 
@@ -299,12 +289,12 @@ Example with multiple sources and one generator:
 ```ts
 import { defineConfig } from 'etherlib-generator'
 import { blockExplorer, etherscan, fetch, foundry, hardhat, sourcify, viem } from 'etherlib-generator/plugins'
+import { mainnet } from 'viem/chains'
 
 export default defineConfig({
-  output: 'src/generated',
-  fragments: {},
-  addresses: {},
-  chains: {},
+  output: 'dist',
+  contracts: [/* ... */],
+  chains: [mainnet],
   plugins: [
     hardhat(),
     foundry({ project: 'packages/contracts' }),
