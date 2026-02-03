@@ -16,10 +16,11 @@ Manage and generate different ethereum library codes from config(ABIs, networks,
 ## Features ✨
 
 - **Simplified Contract Interaction** - Generate type-safe contract interfaces from ABIs
-- **Multi-Library Support** - Generate code for different Ethereum libraries (Viem, Ethers.js)
+- **Multi-Library Support** - Generate code for Viem, Ethers.js, or Wagmi (with React hooks)
+- **Multiple ABI Sources** - Resolve ABIs from Hardhat, Foundry, Etherscan, Sourcify, block explorers, or custom fetch
 - **Chain Management** - Configure and manage multiple blockchain networks
 - **Address Management** - Organize contract addresses across different chains
-- **Plugin System** - Extensible architecture with plugins for different libraries and frameworks
+- **Plugin System** - Source plugins (resolve) + generator plugins (run); mix and match as needed
 - **Type Safety** - Full TypeScript support for enhanced developer experience
 
 ## Installation 📦
@@ -54,10 +55,10 @@ export default defineConfig({
   chains: {},
 
   plugins: [
-    // Collect configs(deployedAddress, network, fragments) from Hardhat
+    // Source: hardhat() | foundry() | etherscan() | sourcify() | blockExplorer() | fetch()
     hardhat(),
-    // Generate code for viem
-    viem(), // or ethers()
+    // Generator: viem() | ethers() | wagmi()
+    viem(),
   ],
 })
 ```
@@ -258,16 +259,61 @@ const config = defineConfig({
 
 ### Plugins
 
-Add plugins for different libraries:
+Plugins are split into **source plugins** (resolve ABIs, addresses, chains) and **generator plugins** (emit library code). Use one or more source plugins, then one or more generator plugins.
 
 ```ts
 const config = defineConfig({
   // ...
   plugins: [
+    // Source: collect from Hardhat / Foundry / Etherscan / Sourcify / block explorer / custom fetch
     hardhat(),
-    viem(), // or // ethers()
+    // foundry(), etherscan({ ... }), sourcify({ ... }), blockExplorer({ ... }), fetch({ ... }),
+    // Generators: emit code for viem / ethers / wagmi
+    viem(), // or ethers() or wagmi()
   ]
   // ...
+})
+```
+
+#### Source plugins (resolve)
+
+| Plugin | Description |
+|--------|-------------|
+| **hardhat** | Read artifacts, Ignition deployments, and network config from a Hardhat project (`artifacts/`, `ignition/`, `hardhat.config`). |
+| **foundry** | Read artifacts and optional broadcast deployments from a Foundry project (`out/`, optional `broadcast/`). Supports `forge build` and exclusions. |
+| **etherscan** | Fetch ABIs from Etherscan v2 API by chain and contract addresses. Optional proxy implementation resolution. |
+| **blockExplorer** | Fetch ABIs from any block explorer API (custom `baseUrl`). Use for Routescan, Blockscout, or other explorers. |
+| **sourcify** | Fetch ABIs from [Sourcify](https://docs.sourcify.dev/docs/chains) by chain ID and contract addresses. |
+| **fetch** | Custom source: you provide `request(name, address)` and optional `parse(response)` to load ABIs from any URL or API. |
+
+#### Generator plugins (run)
+
+| Plugin | Description |
+|--------|-------------|
+| **viem** | Generate viem-style helpers: `createGetContract`, `createReadContract`, `createWriteContract`, `createWatchContractEvent`, etc., plus `connection` / `chain` / `client` / `addresses`. |
+| **ethers** | Generate ethers.js code (TypeChain-based) and contract factories. |
+| **wagmi** | Generate wagmi-style code including React hooks (`createUseReadContract`, `createUseWriteContract`, etc.) and shared config. |
+
+Example with multiple sources and one generator:
+
+```ts
+import { defineConfig } from 'etherlib-generator'
+import { blockExplorer, etherscan, fetch, foundry, hardhat, sourcify, viem } from 'etherlib-generator/plugins'
+
+export default defineConfig({
+  output: 'src/generated',
+  fragments: {},
+  addresses: {},
+  chains: {},
+  plugins: [
+    hardhat(),
+    foundry({ project: 'packages/contracts' }),
+    // etherscan({ apiKey: process.env.ETHERSCAN_API_KEY!, chainId: 1, contracts: [...] }),
+    // sourcify({ chainId: 1, contracts: [...] }),
+    // blockExplorer({ baseUrl: 'https://api.etherscan.io', contracts: [...], chainId: 1 }),
+    // fetch({ chainId: 1, contracts: { Foo: '0x...' }, request: (name, addr) => ({ url: `.../${addr}` }) }),
+    viem(),
+  ],
 })
 ```
 

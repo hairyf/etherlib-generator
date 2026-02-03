@@ -154,33 +154,28 @@ export interface Config {
    */
   contracts?: ContractConfig[]
   /**
-   * Supported chains
+   * Supported chains. Object key as alias, or array of chains with alias from `chain.name` (first letter lowercased).
    *
    * @example
    *
    * ```ts
    * import { mainnet, optimism } from 'viem/chains'
    *
+   * // array: alias = mainnet.name -> "mainnet", optimism.name -> "optimism"
+   * export default defineConfig({
+   *  chains: [mainnet, optimism],
+   * })
+   *
+   * // object: explicit alias
    * export default defineConfig({
    *  chains: {
-   *    // complex options
    *    ethereum: mainnet,
-   *    optimism: optimism,
-   *    // simple options
-   *    custom: {
-   *      name: 'Custom Chain',
-   *      icon: 'https://...',
-   *      testnet: false,
-   *      id: 1,
-   *      explorer: { name: 'Etherscan', url: 'https:...', api: 'https:...' },
-   *      currency: { decimals: 18, name: 'Custom', symbol: 'CUSTOM' },
-   *      rpc: 'https:...',
-   *    }
+   *    custom: { name: 'Custom Chain', id: 1, rpc: 'https:...', ... },
    *  },
    * })
    * ```
    */
-  chains?: UserChains
+  chains?: UserChains | Array<ViemChain | SimpleChain>
   /**
    * Extension plugins for reading and generating code
    *

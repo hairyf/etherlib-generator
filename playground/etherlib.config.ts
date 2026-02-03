@@ -1,6 +1,7 @@
 import { defineConfig } from 'etherlib-generator'
 import { hardhat, viem } from 'etherlib-generator/plugins'
 import { erc20Abi } from 'viem'
+import { mainnet } from 'viem/chains'
 
 // This is a configuration file for the Ethereum Library Generator.
 const config = defineConfig([
@@ -14,6 +15,7 @@ const config = defineConfig([
       hardhat(),
       viem(),
     ],
+    chains: [mainnet],
   },
 ])
 

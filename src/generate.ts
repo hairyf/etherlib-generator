@@ -1,6 +1,6 @@
 /* eslint-disable ts/no-redeclare */
 import type { Arrayable } from '@hairy/utils'
-import type { Chain, Config, Output, PluginBuildConfig, PluginBuildResolved, SimpleChain } from './config'
+import type { Chain, Config, Output, PluginBuildConfig, PluginBuildResolved, SimpleChain, UserChains } from './config'
 import type { ViemChain } from './config/viem'
 import { writeFile } from 'node:fs/promises'
 import { basename, dirname } from 'node:path'
@@ -86,8 +86,18 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
         }
       }
     }
-    if (config.chains)
-      merge(resolved.chains, config.chains)
+    if (config.chains) {
+      const chainsToMerge: UserChains = Array.isArray(config.chains)
+        ? Object.fromEntries(
+            config.chains.map((chain, i) => {
+              const name = chain.name ?? `chain${i}`
+              const alias = name.charAt(0).toLowerCase() + name.slice(1)
+              return [alias, chain]
+            }),
+          )
+        : config.chains
+      merge(resolved.chains, chainsToMerge)
+    }
     if (config.addresses)
       merge(resolved.addresses, config.addresses)
 

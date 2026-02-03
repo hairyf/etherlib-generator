@@ -82,4 +82,65 @@ describe('generate', () => {
     })
     await expect(generate({ config: 'custom.config.ts', root: process.cwd() })).resolves.toBeUndefined()
   })
+
+  it('normalizes chains array: alias from chain.name (first letter lowercase)', async () => {
+    const run = vi.fn().mockResolvedValue([])
+    const mainnetLike = {
+      name: 'Ethereum',
+      id: 1,
+      rpcUrls: { default: { http: ['https://eth.llamarpc.com'] } },
+      nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    }
+    mockLoadConfig.mockResolvedValue({
+      config: {
+        output: 'dist',
+        chains: [mainnetLike],
+        plugins: [
+          {
+            name: 'assert-chains',
+            validate: vi.fn().mockResolvedValue(undefined),
+            run,
+          },
+        ],
+      },
+      sources: ['etherlib.config.ts'],
+    })
+
+    await generate()
+
+    const handled = run.mock.calls[0][0]
+    expect(handled.chains.ethereum).toBeDefined()
+    expect(handled.chains.ethereum.name).toBe('Ethereum')
+    expect(handled.chains.ethereum.id).toBe(1)
+  })
+
+  it('normalizes chains array: fallback alias when chain.name is missing', async () => {
+    const run = vi.fn().mockResolvedValue([])
+    const chainWithoutName = {
+      id: 31337,
+      rpc: 'http://127.0.0.1:8545',
+      name: undefined,
+      currency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+    }
+    mockLoadConfig.mockResolvedValue({
+      config: {
+        output: 'dist',
+        chains: [chainWithoutName],
+        plugins: [
+          {
+            name: 'assert-chains',
+            validate: vi.fn().mockResolvedValue(undefined),
+            run,
+          },
+        ],
+      },
+      sources: ['etherlib.config.ts'],
+    })
+
+    await generate()
+
+    const handled = run.mock.calls[0][0]
+    expect(handled.chains.chain0).toBeDefined()
+    expect(handled.chains.chain0.id).toBe(31337)
+  })
 })
