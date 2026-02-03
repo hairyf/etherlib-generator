@@ -9,4 +9,7 @@ lib-cov
 logs
 node_modules
 temp
-skills
+
+**/skills
+!/skills
+!/skills/**
