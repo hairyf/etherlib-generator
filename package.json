@@ -75,6 +75,7 @@
     "ethers": "catalog:ethereum",
     "fs-extra": "catalog:runtime",
     "glob": "catalog:runtime",
+    "knitwork-x": "catalog:runtime",
     "nanoid": "catalog:runtime",
     "nanospinner": "catalog:runtime",
     "picocolors": "catalog:runtime",

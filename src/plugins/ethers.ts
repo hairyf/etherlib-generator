@@ -5,6 +5,7 @@ import { camelCase, pascalCase } from 'change-case'
 import dedent from 'dedent'
 import { ensureDir, readFileSync, remove } from 'fs-extra'
 import { glob } from 'glob'
+import { genFunction, genImport, genVariable } from 'knitwork-x'
 import { nanoid } from 'nanoid'
 import { runTypeChain, glob as tGlob } from 'typechain'
 
@@ -31,10 +32,12 @@ export function ethers(): Plugin {
         '// @ts-nocheck',
         `import { type InterfaceAbi, type Signer, JsonRpcProvider, BrowserProvider, Wallet, Contract } from 'ethers'`,
         `import { set, get, proxy, type GetContractAtConfig, type ConnectionAccountConfig, type GetContractConfig, type TypedFragment } from './library'`,
-        typechainIndexTS && `import {\n${contracts
-          .map(name => `  ${name}__factory, type ${name}`)
-          .join(',\n',
-          )}\n} from './typechain'`,
+        ...(typechainIndexTS
+          ? [
+              genImport('./typechain', contracts.map(name => `${name}__factory`)),
+              genImport('./typechain', contracts, { type: true }),
+            ]
+          : []),
       ]
 
       const content: (string | string[])[] = [
@@ -97,7 +100,12 @@ export function ethers(): Plugin {
 
         contracts
           .map((name) => {
-            return `export const ${camelCase(`${name}Abi`)} = set<TypedFragment<typeof ${name}__factory.abi, ${name}>>(${name}__factory.abi, 'name', '${name}')`
+            const abi_var = `${name}__factory.abi`
+            return genVariable(
+              camelCase(`${name}Abi`),
+              `set<TypedFragment<typeof ${abi_var}, ${name}>>(${abi_var}, 'name', '${name}')`,
+              { export: true },
+            )
           })
           .join('\n'),
         '',
@@ -111,14 +119,20 @@ export function ethers(): Plugin {
         `}`,
         '',
         contracts.map((name) => {
-          return [
-            '/**',
-            ` * Wraps __{@link get${pascalCase(name)}}__ with \`abi\` set to __{@link ${camelCase(`${name}Abi`)}}__`,
-            ' */',
-            `export function get${pascalCase(name)}(config: GetContractAtConfig = {}): ${name} {`,
-            `  return ${name}__factory.connect(config.address || get(chain, 'contracts.${name}.address'), config.runner || client)`,
-            `}`,
-          ].join('\n')
+          const factory_var = `${name}__factory`
+          const address_var = `config.address || get(chain, 'contracts.${name}.address')`
+          return genFunction({
+            name: `get${pascalCase(name)}`,
+            parameters: [{ name: 'config', type: 'GetContractAtConfig', default: '{}' }],
+            returnType: name,
+            jsdoc: [
+              `Wraps __{@link get${pascalCase(name)}}__ with \`abi\` set to __{@link ${camelCase(`${name}Abi`)}}__`,
+            ],
+            body: [
+              `return ${factory_var}.connect(${address_var}, config.runner || client)`,
+            ],
+            export: true,
+          })
         }).join('\n\n'),
       ]
 

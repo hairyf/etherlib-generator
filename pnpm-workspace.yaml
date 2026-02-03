@@ -42,6 +42,7 @@ catalogs:
     dedent: ^1.6.0
     fs-extra: ^11.3.0
     glob: ^11.0.2
+    knitwork-x: ^0.2.0
     nanoid: ^5.1.5
     nanospinner: ^1.2.2
     picocolors: ^1.1.1

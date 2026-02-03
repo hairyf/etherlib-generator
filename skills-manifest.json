@@ -5,6 +5,9 @@
     "claude-code"
   ],
   "skills": {
+    "hairyf/knitwork-x": [
+      "knitwork-x"
+    ],
     "hairyf/skills": [
       "arch-tsdown-cli",
       "create-skill-from-repo",

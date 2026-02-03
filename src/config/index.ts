@@ -16,6 +16,19 @@ export interface Contracts {
   [contractName: string]: Abi
 }
 
+/**
+ * Wagmi-cli compatible contract config: name + ABI + optional address(es).
+ * @see https://wagmi.sh/cli/config#contractconfig
+ */
+export interface ContractConfig {
+  /** Contract ABI (viem Abi). */
+  abi: Abi
+  /** Optional. Single address or `{ [chainId]: address }` for multi-chain. */
+  address?: Address | Record<number, Address>
+  /** Unique contract name (used for generated symbols and deduplication). */
+  name: string
+}
+
 export interface BasicCurrency {
   name: string
   /** 2-6 characters long */
@@ -122,6 +135,24 @@ export interface Config {
    * })
    */
   fragments?: Fragments
+  /**
+   * Merged with fragments and plugin contracts.
+   *
+   * @example
+   *
+   * ```ts
+   * import { defineConfig } from 'etherlib-generator'
+   * import { erc20Abi } from 'viem'
+   *
+   * export default defineConfig({
+   *  contracts: [
+   *    { name: 'Counter', abi: counterAbi, address: { 1: '0x...', 5: '0x...' } },
+   *    { name: 'ERC20', abi: erc20Abi },
+   *  ],
+   * })
+   * ```
+   */
+  contracts?: ContractConfig[]
   /**
    * Supported chains
    *

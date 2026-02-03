@@ -107,6 +107,9 @@ catalogs:
     glob:
       specifier: ^11.0.2
       version: 11.0.2
+    knitwork-x:
+      specifier: ^0.2.0
+      version: 0.2.0
     nanoid:
       specifier: ^5.1.5
       version: 5.1.5
@@ -173,6 +176,9 @@ importers:
       glob:
         specifier: catalog:runtime
         version: 11.0.2
+      knitwork-x:
+        specifier: catalog:runtime
+        version: 0.2.0
       nanoid:
         specifier: catalog:runtime
         version: 5.1.5
@@ -3133,6 +3139,9 @@ packages:
   kleur@3.0.3:
     resolution: {integrity: sha512-eTIzlVOSUR+JxdDFepEYcBMtZ9Qqdef+rnzWdRZuMbOywu5tO2w2N7rqjoANZ5k9vywhL6Br1VRjUIgTQx4E8w==}
     engines: {node: '>=6'}
+
+  knitwork-x@0.2.0:
+    resolution: {integrity: sha512-uIqlQYbPKg3vGeOp0ZK3a2+hPrx780/PDIN8Xlwy6eC8t9Zr25oXffKepKNACPlwYFxh7SuMSmk7xQ3D3HnNmw==}
 
   levn@0.4.1:
     resolution: {integrity: sha512-+bT2uH4E5LGE7h/n3evcS/sQlJXCpIp6ym8OWJ5eV6+67Dsql/LaaT7qJBAt2rzfoa/5QBGBhxDix1dMt2kQKQ==}
@@ -8455,6 +8464,8 @@ snapshots:
   keyvaluestorage-interface@1.0.0: {}
 
   kleur@3.0.3: {}
+
+  knitwork-x@0.2.0: {}
 
   levn@0.4.1:
     dependencies:

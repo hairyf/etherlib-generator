@@ -71,6 +71,21 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
 
     if (config.fragments)
       merge(resolved.contracts, config.fragments)
+    if (config.contracts) {
+      for (const c of config.contracts) {
+        resolved.contracts[c.name] = c.abi
+        if (c.address !== undefined) {
+          resolved.addresses[c.name] ??= {}
+          if (typeof c.address === 'string') {
+            resolved.addresses[c.name][1] = c.address
+          }
+          else {
+            for (const [chainId, addr] of Object.entries(c.address))
+              resolved.addresses[c.name][Number(chainId)] = addr
+          }
+        }
+      }
+    }
     if (config.chains)
       merge(resolved.chains, config.chains)
     if (config.addresses)
