@@ -7,11 +7,11 @@ import { basename, dirname, resolve } from 'node:path'
 import process from 'node:process'
 import { merge } from '@hairy/utils'
 import { loadConfig } from 'c12'
-import pc from 'picocolors'
 import { z } from 'zod'
 import { APP_NAME } from './constants'
 import { fromZodError } from './errors'
 import { logger } from './utils'
+import { gray } from './utils/colors'
 
 export type GenerateOptions = z.infer<typeof GenerateOptions>
 const GenerateOptions = z.object({
@@ -37,21 +37,21 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
   })
   if (!resolvedConfigFile) {
     if (options.config)
-      throw new Error(`Config not found at ${pc.gray(options.config)}`)
+      throw new Error(`Config not found at ${gray(options.config)}`)
     throw new Error('Config not found')
   }
   const isArrayConfig = Array.isArray(config)
   const configs = (isArrayConfig ? config : [config]).filter(Boolean)
   if (!configs.length) {
     if (options.config)
-      throw new Error(`Config not found at ${pc.gray(options.config)}`)
+      throw new Error(`Config not found at ${gray(options.config)}`)
     throw new Error('Config not found')
   }
   const outputNames = new Set<string>()
 
   for (const config of configs) {
     if (isArrayConfig && resolvedConfigFile)
-      logger.log(`Using config ${pc.gray(basename(resolvedConfigFile))}`)
+      logger.log(`Using config ${gray(basename(resolvedConfigFile))}`)
     if (!config.output)
       throw new Error('output is required.')
 
@@ -173,7 +173,7 @@ export async function generate(options: GenerateOptions = {}): Promise<void> {
         throw new Error(`out "${config.output}" must be unique.`)
       outputNames.add(output)
       await rm(output, { recursive: true, force: true })
-      spinner.start(`Writing to ${pc.gray(output)}`)
+      spinner.start(`Writing to ${gray(output)}`)
       for (const file of files) {
         const filepath = `${output}/${file.id}`
         const contents = [

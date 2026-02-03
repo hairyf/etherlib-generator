@@ -90,7 +90,6 @@
     "knitwork-x": "catalog:runtime",
     "nanoid": "catalog:runtime",
     "nanospinner": "catalog:runtime",
-    "picocolors": "catalog:runtime",
     "scule": "catalog:runtime",
     "typechain": "catalog:ethereum",
     "viem": "catalog:ethereum",

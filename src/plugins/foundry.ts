@@ -7,8 +7,8 @@ import { basename, extname, join, resolve } from 'node:path'
 import process from 'node:process'
 import dedent from 'dedent'
 import { glob } from 'glob'
-import pc from 'picocolors'
 import { z } from 'zod'
+import { gray } from '../utils/colors'
 
 export const foundryDefaultExcludes = [
   'Base.sol/**',
@@ -223,7 +223,7 @@ export function foundry(config: FoundryPluginConfig = {}): Plugin {
     name: 'foundry',
     async validate() {
       if (!existsSync(project))
-        throw new Error(`Foundry project ${pc.gray(config.project ?? '.')} not found.`)
+        throw new Error(`Foundry project ${gray(config.project ?? '.')} not found.`)
 
       if (clean || build) {
         try {
