@@ -8,10 +8,13 @@
 
 Manage and generate different ethereum library codes from config(ABIs, networks, chains, address)
 
+![library][foundry-src]
 ![library][hardhat-src]
 ![library][viem-src]
-![library][ethers-src]
 ![library][wagmi-src]
+![library][ethers-src]
+![library][etherscan-src]
+![library][sourcify-src]
 
 ## Features ✨
 
@@ -333,6 +336,9 @@ Check out the [playground](https://github.com/hairyf/etherlib-generator/tree/mai
 [jsdocs-src]: https://img.shields.io/badge/jsdocs-reference-080f12?style=flat&colorA=080f12&colorB=1fa669
 [jsdocs-href]: https://www.jsdocs.io/package/etherlib-generator
 [hardhat-src]: https://img.shields.io/badge/hardhat-v3+-CCB200.svg
+[foundry-src]: https://img.shields.io/badge/foundry-forge-00C9B7.svg
 [viem-src]: https://img.shields.io/badge/viem-v2+-ffc517.svg
 [ethers-src]: https://img.shields.io/badge/ethers-v6+-2535a0.svg
 [wagmi-src]: https://img.shields.io/badge/wagmi-v2+-a8b1ff.svg
+[etherscan-src]: https://img.shields.io/badge/etherscan-api-2E8B57.svg
+[sourcify-src]: https://img.shields.io/badge/sourcify-verified-36C5F0.svg
