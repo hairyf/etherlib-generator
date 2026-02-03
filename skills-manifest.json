@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/hairyf/skills-manifest/main/skills-manifest.schema.json",
+  "agents": [
+    "cursor",
+    "claude-code"
+  ],
+  "skills": {
+    "hairyf/skills": [
+      "arch-tsdown-cli",
+      "create-skill-from-repo",
+      "undocs",
+      "unjs",
+      "vite",
+      "vitest"
+    ]
+  }
+}

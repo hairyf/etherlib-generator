@@ -5,18 +5,18 @@
     "build": "etherlib generate"
   },
   "dependencies": {
-    "wagmi": "catalog:"
+    "wagmi": "catalog:ethereum"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-ignition": "catalog:",
-    "@nomicfoundation/hardhat-ignition-viem": "catalog:",
-    "@nomicfoundation/hardhat-keystore": "catalog:",
-    "@nomicfoundation/hardhat-toolbox-viem": "catalog:",
+    "@nomicfoundation/hardhat-ignition": "catalog:ethereum",
+    "@nomicfoundation/hardhat-ignition-viem": "catalog:ethereum",
+    "@nomicfoundation/hardhat-keystore": "catalog:ethereum",
+    "@nomicfoundation/hardhat-toolbox-viem": "catalog:ethereum",
     "@types/node": "catalog:types",
-    "@types/react": "catalog:",
+    "@types/react": "catalog:react",
     "etherlib-generator": "workspace:^",
-    "forge-std": "catalog:",
-    "hardhat": "catalog:",
-    "viem": "catalog:"
+    "forge-std": "catalog:ethereum",
+    "hardhat": "catalog:ethereum",
+    "viem": "catalog:ethereum"
   }
 }
