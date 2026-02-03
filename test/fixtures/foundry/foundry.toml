@@ -1,0 +1,3 @@
+[profile.default]
+out = 'out'
+src = 'src'

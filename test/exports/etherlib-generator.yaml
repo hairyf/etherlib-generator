@@ -2,8 +2,13 @@
   defineConfig: function
 ./hardhat-network: {}
 ./plugins:
+  blockExplorer: function
   ethers: function
+  etherscan: function
   fetch: function
+  foundry: function
+  foundryDefaultExcludes: object
   hardhat: function
+  sourcify: function
   viem: function
   wagmi: function
