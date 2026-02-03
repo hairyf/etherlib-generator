@@ -1,8 +1,7 @@
-name: Release
+# Release on tag push (v*). Uses sxzz/workflows with publish: true for npm.
+# For npm Trusted Publisher: connect package to GitHub in npm → access; then push tag to publish.
 
-permissions:
-  id-token: write
-  contents: write
+name: Release
 
 on:
   push:
@@ -11,25 +10,9 @@ on:
 
 jobs:
   release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-          registry-url: https://registry.npmjs.org/
-
-      - run: pnpm dlx changelogithub
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-      # # Uncomment the following lines to publish to npm on CI
-      #
-      # - run: pnpm install
-      # - run: pnpm publish --no-git-checks -r --access public
-      #   env:
-      #     NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-      #     NPM_CONFIG_PROVENANCE: true
+    uses: sxzz/workflows/.github/workflows/release.yml@v1
+    with:
+      github-release: true
+      publish: true
+      build: pnpm run build
+    secrets: inherit

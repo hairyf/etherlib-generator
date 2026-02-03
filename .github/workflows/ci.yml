@@ -1,10 +1,12 @@
+# GitHub Actions CI for a tsdown CLI package.
+# Lint + typecheck on push/PR; build + test on Node/OS matrix.
+
 name: CI
 
 on:
   push:
     branches:
       - main
-
   pull_request:
     branches:
       - main

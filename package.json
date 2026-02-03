@@ -13,7 +13,21 @@
     "url": "git+https://github.com/hairyf/etherlib-generator.git"
   },
   "bugs": "https://github.com/hairyf/etherlib-generator/issues",
-  "keywords": [],
+  "keywords": [
+    "ethereum",
+    "abi",
+    "code-generator",
+    "viem",
+    "ethers",
+    "wagmi",
+    "hardhat",
+    "foundry",
+    "typechain",
+    "contract",
+    "blockchain",
+    "web3",
+    "smart-contract"
+  ],
   "sideEffects": false,
   "exports": {
     ".": "./src/index.ts",
