@@ -73,6 +73,7 @@
     "release": "bumpp && pnpm publish",
     "start": "tsx src/index.ts",
     "test": "vitest",
+    "test:coverage": "vitest run --coverage",
     "typecheck": "tsc --noEmit",
     "prepare": "simple-git-hooks && skills-manifest install"
   },
@@ -100,6 +101,7 @@
     "@antfu/ni": "catalog:cli",
     "@antfu/utils": "catalog:inlined",
     "@types/node": "catalog:types",
+    "@vitest/coverage-v8": "catalog:testing",
     "bumpp": "catalog:cli",
     "eslint": "catalog:cli",
     "hardhat": "catalog:ethereum",
