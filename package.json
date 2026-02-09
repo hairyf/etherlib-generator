@@ -70,7 +70,7 @@
     "build": "tsdown",
     "lint": "eslint",
     "prepublishOnly": "nr build",
-    "release": "bumpp && pnpm publish",
+    "release": "bumpp",
     "start": "tsx src/index.ts",
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
